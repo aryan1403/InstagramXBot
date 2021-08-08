@@ -19,6 +19,11 @@
             "description": "The command handler to invoke commands.",
             "value": "/",
             "required": false
+        },
+        "conn": {
+            "description" : "Enter MongoDB Connection String",
+            "value" : "",
+            "required" : true
         }
     }
 }
