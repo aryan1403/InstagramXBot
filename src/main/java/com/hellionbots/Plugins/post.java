@@ -24,7 +24,7 @@ public class post extends InstaX implements Master {
         if (update.getMessage().getReplyToMessage().hasPhoto() && cmd.equalsIgnoreCase(getHandler() + "post")) {
             String username = new credentials().getUsername(update);
             String password = new credentials().getPass(update);
-            System.out.println(username+", "+password);
+
             if (username != null && password != null) {
                 upload(update, username, password);
             } else
