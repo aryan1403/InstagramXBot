@@ -7,8 +7,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class credentials {
     static db database = new db();
 
-    public static String username;
-    public static String password;
+    public String username;
+    public String password;
 
     public credentials(Update update){
         username = getUsername(update);
