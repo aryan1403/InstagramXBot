@@ -45,7 +45,11 @@ public class InstaX extends TelegramLongPollingBot{
     }
 
     public String support(){
-        return "";
+        return "@HellionBotSupport";
+    }
+
+    public String channel(){
+        return "@HellionBots";
     }
 
     @Override
