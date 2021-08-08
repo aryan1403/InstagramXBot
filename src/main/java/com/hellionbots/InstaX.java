@@ -13,14 +13,13 @@ public class InstaX extends TelegramLongPollingBot{
     @Override
     public void onUpdateReceived(Update update) {
         String cmd = update.getMessage().getText();
-        if (update.hasMessage() && cmd.startsWith(getHandler())) {
-            sendRequest(update, cmd);
-        }
+
+        sendRequest(update, cmd);
     }
 
     public void sendRequest(Update update, String cmd) {
-        new post().handleRequests(update, cmd);
         new setCredentials().handleRequests(update, cmd);
+        new post().handleRequests(update, cmd);
     }
 
     public String getHandler() {
