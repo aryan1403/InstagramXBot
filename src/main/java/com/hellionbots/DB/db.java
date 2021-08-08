@@ -4,16 +4,15 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
-import java.util.ArrayList;
-import java.util.List;
 
 public class db {
     private final String MongoUrl = "mongodb://localhost:27017";
     private final String dbName = "test";
     private final String collName = "testing";
     
-    public boolean add(String key, Document document){
+    public boolean add(Document document){
         try {
             MongoClient client = MongoClients.create(MongoUrl);
             MongoDatabase database = client.getDatabase(dbName);
@@ -22,23 +21,68 @@ public class db {
             doc.insertOne(document);
             return true;
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             System.out.println("ERROR Occured Inserting Data..");
             return false;
         }
     }
 
-    public List<Document> get(){
+    public void alreadyPresent(String id){
         try {
             MongoClient client = MongoClients.create(MongoUrl);
             MongoDatabase database = client.getDatabase(dbName);
             MongoCollection<Document> doc = database.getCollection(collName);
 
-            List<Document> list = new ArrayList<>();
-
-            for (Document d : doc.find()) {
-                list.add(d);
+            Document d = doc.find(Filters.eq("key", id)).first();
+        
+            if(d.isEmpty() != true){
+                doc.deleteOne(d);
             }
-            return list;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("ERROR Occured Deleting Data..");
+        }
+    }
+
+    public String findUsername(String id){
+        try {
+            MongoClient client = MongoClients.create(MongoUrl);
+            MongoDatabase database = client.getDatabase(dbName);
+            MongoCollection<Document> doc = database.getCollection(collName);
+
+            Document d = doc.find(Filters.eq("key", id)).first();
+            String username = d.get("username").toString();
+            return username;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("ERROR Occured Finding Username..");
+            return null;
+        }
+    }
+
+    public String findPassword(String id){
+        try {
+            MongoClient client = MongoClients.create(MongoUrl);
+            MongoDatabase database = client.getDatabase(dbName);
+            MongoCollection<Document> doc = database.getCollection(collName);
+
+            Document d = doc.find(Filters.eq("key", id)).first();
+            String password = d.get("password").toString();
+            return password;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("ERROR Occured Finding Password..");
+            return null;
+        }
+    }
+
+    public Document get(String id){
+        try {
+            MongoClient client = MongoClients.create(MongoUrl);
+            MongoDatabase database = client.getDatabase(dbName);
+            MongoCollection<Document> doc = database.getCollection(collName);
+
+            return doc.find(Filters.eq("key", id)).first();
         } catch (Exception e) {
             System.out.println("ERROR Occured Retreiving Data..");
             return null;
