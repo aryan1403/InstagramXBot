@@ -1,14 +1,26 @@
 package com.hellionbots.Helpers;
 
+import com.hellionbots.DB.db;
+
+import org.telegram.telegrambots.meta.api.objects.Update;
+
 public class credentials {
-    public static String username;
-    public static String password;
+    static db database = new db();
 
-    public void setUsername(String username){
-        credentials.username = username;
+    public String username;
+    public String password;
+
+    public credentials(Update update){
+        username = getUsername(update);
+        password = getPass(update);
     }
 
-    public void setPass(String password) {
-        credentials.password = password;
+    public String getUsername(Update update){
+        return database.findUsername(update.getMessage().getFrom().getId().toString());
     }
+
+    public String getPass(Update update){
+        return database.findPassword(update.getMessage().getFrom().getId().toString());
+    }
+
 }
