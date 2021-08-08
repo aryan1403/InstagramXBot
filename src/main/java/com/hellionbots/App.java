@@ -1,9 +1,17 @@
 package com.hellionbots;
 
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
+public final class App {
+    public static void main(String[] args) {
+        try {
+            TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+            telegramBotsApi.registerBot(new InstaX());
+            System.out.println("Bot Started Successfully");
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }
