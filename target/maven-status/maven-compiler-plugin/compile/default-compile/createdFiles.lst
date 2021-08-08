@@ -1,0 +1,11 @@
+com\hellionbots\Plugins\Greets\start.class
+com\hellionbots\Master.class
+com\hellionbots\App.class
+com\hellionbots\Plugins\help.class
+com\hellionbots\Plugins\setCredentials.class
+com\hellionbots\Helpers\credHelper.class
+com\hellionbots\DB\db.class
+com\hellionbots\Helpers\credentials.class
+com\hellionbots\Plugins\post.class
+com\hellionbots\Helpers\configuration.class
+com\hellionbots\InstaX.class
