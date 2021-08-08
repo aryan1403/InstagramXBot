@@ -62,6 +62,9 @@ public class db {
             MongoCollection<Document> doc = database.getCollection(collName);
 
             Document d = doc.find(Filters.eq("key", id)).first();
+
+            if(d == null) return null;
+
             String username = d.get("username").toString();
             return username;
         } catch (Exception e) {
@@ -80,6 +83,9 @@ public class db {
             MongoCollection<Document> doc = database.getCollection(collName);
 
             Document d = doc.find(Filters.eq("key", id)).first();
+
+            if(d == null) return null;
+
             String password = d.get("password").toString();
             return password;
         } catch (Exception e) {

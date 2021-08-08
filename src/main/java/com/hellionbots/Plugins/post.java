@@ -53,6 +53,8 @@ public class post extends InstaX implements Master {
             file = execute(getFiled);
             File res = downloadFile(file);
 
+            new credentials(update);
+            new credentials(update);
             if (postNow(new credentials(update).username, new credentials(update).password, res, caption, update, m) != false)
             {
                 long endTime = System.nanoTime();
