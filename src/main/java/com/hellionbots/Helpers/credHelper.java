@@ -1,8 +1,7 @@
 package com.hellionbots.Helpers;
 
-import org.telegram.telegrambots.meta.api.objects.Update;
-
 public class credHelper {
+    /*
     // Check's if the username is present
     public boolean isUPresent(Update update){
         if(new credentials(update).username == null)
@@ -16,4 +15,6 @@ public class credHelper {
             return false;
         return true;
     }
+    */
+
 }

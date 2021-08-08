@@ -22,15 +22,17 @@ public class post extends InstaX implements Master {
     @Override
     public void handleRequests(Update update, String cmd) {
         if (update.getMessage().getReplyToMessage().hasPhoto() && cmd.equalsIgnoreCase(getHandler() + "post")) {
-            if (c.isUPresent(update) && c.isPPresent(update)) {
-                upload(update);
+            String username = new credentials().getUsername(update);
+            String password = new credentials().getPass(update);
+            if (username != null && password != null) {
+                upload(update, username, password);
             } else
                 sendMessage(update,
                     "Please set your Username and Password in order to use the Bot.\nType /setcred to enter your credential's");
         }
     }
 
-    public void upload(Update update) {
+    public void upload(Update update, String username, String password) {
         Message m = sendMessage(update, "Uploading...");
         long startTime = System.nanoTime();
         List<PhotoSize> arr = update.getMessage().getReplyToMessage().getPhoto();
@@ -53,7 +55,7 @@ public class post extends InstaX implements Master {
             file = execute(getFiled);
             File res = downloadFile(file);
 
-            if (postNow(new credentials(update).username, new credentials(update).password, res, caption, update, m) != false)
+            if (postNow(username, password, res, caption, update, m) != false)
             {
                 long endTime = System.nanoTime();
 
