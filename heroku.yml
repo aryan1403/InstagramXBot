@@ -1,0 +1,5 @@
+build:
+  docker:
+    worker: Dockerfile
+run:
+  worker: java -jar target/instagram_manager_bot-1.0-jar-with-dependencies.jar
