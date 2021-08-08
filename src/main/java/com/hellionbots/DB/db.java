@@ -12,21 +12,19 @@ import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 public class db {
-    private final String connection = "mongodb://localhost:27017";
+    private final String connection = configuration.conn;
     private final String dbName = "test";
     private final String collName = "testing";
     
     public boolean add(Document document){
         try {
-            /*
             ConnectionString connectionString = new ConnectionString(connection);
             MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-                */
             //MongoCredential credential = MongoCredential.createCredential(configuration.username, "database", configuration.password.toCharArray());
             //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
-            MongoClient client = MongoClients.create(connection);
+            MongoClient client = MongoClients.create(settings);
             
             MongoDatabase database = client.getDatabase(dbName);
             MongoCollection<Document> doc = database.getCollection(collName);
@@ -40,13 +38,12 @@ public class db {
 
     public void alreadyPresent(String id){
         try {
-            /*
             ConnectionString connectionString = new ConnectionString(connection);
             MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-                */
-            MongoClient client = MongoClients.create(connection);
+
+            MongoClient client = MongoClients.create(settings);
             //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
             //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
             MongoDatabase database = client.getDatabase(dbName);
@@ -63,13 +60,12 @@ public class db {
 
     public String findUsername(String id){
         try {
-            /*
             ConnectionString connectionString = new ConnectionString(connection);
             MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-               */
-            MongoClient client = MongoClients.create(connection);
+
+            MongoClient client = MongoClients.create(settings);
             //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
             //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
             MongoDatabase database = client.getDatabase(dbName);
@@ -88,13 +84,12 @@ public class db {
 
     public String findPassword(String id){
         try {
-            /*
             ConnectionString connectionString = new ConnectionString(connection);
             MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-                */
-            MongoClient client = MongoClients.create(connection);
+
+            MongoClient client = MongoClients.create(settings);
             //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
             //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
             MongoDatabase database = client.getDatabase(dbName);
