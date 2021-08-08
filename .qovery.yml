@@ -8,8 +8,8 @@ databases:
   name: "InstaX"
   version: "1"
 routers:
-- name: "main-tests"
+- name: "master-instagram_manager_bot"
   routes:
-  - application_name: "tests"
+  - application_name: "instagram_manager_bot"
     paths:
     - "/*"
