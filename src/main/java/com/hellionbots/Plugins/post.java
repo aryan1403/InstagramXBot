@@ -17,15 +17,16 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class post extends InstaX implements Master {
 
+    credHelper c = new credHelper();
+
     @Override
     public void handleRequests(Update update, String cmd) {
         if (update.getMessage().getReplyToMessage().hasPhoto() && cmd.equalsIgnoreCase(getHandler() + "post")) {
-            credHelper cred = new credHelper();
-            if (cred.isUPresent(update) && cred.isPPresent(update)) {
+            if (c.isUPresent(update) && c.isPPresent(update)) {
                 upload(update);
             } else
                 sendMessage(update,
-                        "Please set your Username and Password in order to use the Bot.\nType /setcred to enter your credential's");
+                    "Please set your Username and Password in order to use the Bot.\nType /setcred to enter your credential's");
         }
     }
 
@@ -72,8 +73,6 @@ public class post extends InstaX implements Master {
     }
 
     public boolean postNow(String username, String password, File res, String caption, Update update, Message m) {
-        username = new credentials(update).username;
-        password = new credentials(update).password;
         try {
             IGClient client = IGClient.builder().username(username).password(password).login();
 
