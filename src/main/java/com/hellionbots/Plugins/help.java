@@ -12,6 +12,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class help extends InstaX implements Master{
 
+    public help(Update update) {
+        super(update);
+    }
+
     @Override
     public void handleRequests(Update update, String cmd) {
         if(cmd.equalsIgnoreCase(getHandler()+"help")){

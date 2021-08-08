@@ -10,6 +10,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class start extends InstaX implements Master {
 
+    public start(Update update) {
+        super(update);
+    }
+
     @Override
     public void handleRequests(Update update, String cmd) {
         if (cmd.equalsIgnoreCase(getHandler() + "start")) {

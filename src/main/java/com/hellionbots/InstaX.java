@@ -12,20 +12,37 @@ import com.hellionbots.Plugins.post;
 import com.hellionbots.Plugins.setCredentials;
 import com.hellionbots.Plugins.Greets.start;
 
-public class InstaX extends TelegramLongPollingBot{
+public class InstaX extends TelegramLongPollingBot implements Runnable{
+
+    Update update;
+    String cmd;
+
+    public InstaX(Update update){
+        this.update = update;
+    }
+
+    //public InstaX(){}
+
     @Override
     public void onUpdateReceived(Update update) {
-        String cmd = update.getMessage().getText();
+        //String cmd = update.getMessage().getText();
 
-        sendRequest(update, cmd);
+        Thread t = new Thread();
+        t.start();
+        //sendRequest(update, cmd);
     }
 
     public void sendRequest(Update update, String cmd) {
-        new start().handleRequests(update, cmd);
-        new help().handleRequests(update, cmd);
-        new info().handleRequests(update, cmd);
-        new setCredentials().handleRequests(update, cmd);
-        new post().handleRequests(update, cmd);
+        new start(update).handleRequests(update, cmd);
+        new help(update).handleRequests(update, cmd);
+        new info(update).handleRequests(update, cmd);
+        new setCredentials(update).handleRequests(update, cmd);
+        new post(update).handleRequests(update, cmd);
+    }
+
+    @Override
+    public void run() {
+        sendRequest(update, update.getMessage().getText().toString());
     }
 
     public String getHandler() {
