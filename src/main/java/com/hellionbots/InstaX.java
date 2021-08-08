@@ -6,8 +6,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import com.hellionbots.Helpers.configuration;
+import com.hellionbots.Plugins.help;
 import com.hellionbots.Plugins.post;
 import com.hellionbots.Plugins.setCredentials;
+import com.hellionbots.Plugins.Greets.start;
 
 public class InstaX extends TelegramLongPollingBot{
     @Override
@@ -18,6 +20,8 @@ public class InstaX extends TelegramLongPollingBot{
     }
 
     public void sendRequest(Update update, String cmd) {
+        new start().handleRequests(update, cmd);
+        new help().handleRequests(update, cmd);
         new setCredentials().handleRequests(update, cmd);
         new post().handleRequests(update, cmd);
     }
