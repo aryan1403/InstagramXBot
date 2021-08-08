@@ -20,7 +20,7 @@
             "value": "/",
             "required": false
         },
-        "conn": {
+        "MONGODB_URI": {
             "description" : "Enter MongoDB Connection String",
             "value" : "",
             "required" : true
