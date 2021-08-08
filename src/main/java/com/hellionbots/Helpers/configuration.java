@@ -10,6 +10,4 @@ public class configuration {
     public static String botUserName = dotenv.get("botUserName");
     public static String handler = dotenv.get("handler");
     public static String conn = dotenv.get("conn");
-    public static String username = dotenv.get("username");
-    public static String password = dotenv.get("password");
 }
