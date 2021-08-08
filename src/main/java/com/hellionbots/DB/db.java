@@ -106,27 +106,6 @@ public class db {
         }
     }
 
-    public Document get(String id){
-        try {
-            /*
-            ConnectionString connectionString = new ConnectionString(connection);
-            MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString)
-                .build();
-                */
-               
-            MongoClient client = MongoClients.create(connection);
-            //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
-            //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
-            MongoDatabase database = client.getDatabase(dbName);
-            MongoCollection<Document> doc = database.getCollection(collName);
-
-            return doc.find(Filters.eq("key", id)).first();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     /*
     public boolean delete(String key) {
         try {
