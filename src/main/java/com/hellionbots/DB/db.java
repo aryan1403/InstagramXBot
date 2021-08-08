@@ -1,31 +1,32 @@
 package com.hellionbots.DB;
 
-import java.util.Arrays;
 import com.hellionbots.Helpers.configuration;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+
 import org.bson.Document;
 
 public class db {
-    //private final String connection = configuration.conn;
+    private final String connection = "mongodb://localhost:27017";
     private final String dbName = "test";
     private final String collName = "testing";
     
     public boolean add(Document document){
         try {
-            /*
             ConnectionString connectionString = new ConnectionString(connection);
             MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-                */
-            MongoCredential credential = MongoCredential.createCredential(configuration.username, "database", configuration.password.toCharArray());
-            MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
-            //MongoClient client = MongoClients.create(settings);
+             
+            //MongoCredential credential = MongoCredential.createCredential(configuration.username, "database", configuration.password.toCharArray());
+            //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
+            MongoClient client = MongoClients.create(connection);
+            
             MongoDatabase database = client.getDatabase(dbName);
             MongoCollection<Document> doc = database.getCollection(collName);
 
@@ -38,15 +39,15 @@ public class db {
 
     public void alreadyPresent(String id){
         try {
-            /*
+
             ConnectionString connectionString = new ConnectionString(connection);
             MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-                */
-            //MongoClient client = MongoClients.create(settings);
-            MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
-            MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
+                
+            MongoClient client = MongoClients.create(connection);
+            //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
+            //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
             MongoDatabase database = client.getDatabase(dbName);
             MongoCollection<Document> doc = database.getCollection(collName);
 
@@ -61,15 +62,14 @@ public class db {
 
     public String findUsername(String id){
         try {
-            /*
             ConnectionString connectionString = new ConnectionString(connection);
             MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-                */
-            //MongoClient client = MongoClients.create(settings);
-            MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
-            MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
+               
+            MongoClient client = MongoClients.create(connection);
+            //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
+            //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
             MongoDatabase database = client.getDatabase(dbName);
             MongoCollection<Document> doc = database.getCollection(collName);
 
@@ -86,15 +86,13 @@ public class db {
 
     public String findPassword(String id){
         try {
-            /*
             ConnectionString connectionString = new ConnectionString(connection);
             MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-                */
-            //MongoClient client = MongoClients.create(settings);
-            MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
-            MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
+            MongoClient client = MongoClients.create(connection);
+            //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
+            //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
             MongoDatabase database = client.getDatabase(dbName);
             MongoCollection<Document> doc = database.getCollection(collName);
 
@@ -111,15 +109,14 @@ public class db {
 
     public Document get(String id){
         try {
-            /*
             ConnectionString connectionString = new ConnectionString(connection);
             MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-                */
-            //MongoClient client = MongoClients.create(settings);
-            MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
-            MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
+               
+            MongoClient client = MongoClients.create(connection);
+            //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
+            //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
             MongoDatabase database = client.getDatabase(dbName);
             MongoCollection<Document> doc = database.getCollection(collName);
 
