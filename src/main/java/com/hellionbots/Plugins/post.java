@@ -19,7 +19,7 @@ public class post extends InstaX implements Master {
     public void handleRequests(Update update, String cmd) {
         if (cmd.equalsIgnoreCase(getHandler() + "post")) {
             credHelper cred = new credHelper();
-            if (cred.isUPresent() && cred.isPPresent()) {
+            if (cred.isUPresent(update) && cred.isPPresent(update)) {
                 sendMessage(update, "Send a Reply Image to Post to your Account");
             }
             else
@@ -46,7 +46,7 @@ public class post extends InstaX implements Master {
                 file = execute(getFiled);
                 File res = downloadFile(file);
 
-                postNow(credentials.username, credentials.password, res, caption, update);
+                postNow(new credentials(update).username, new credentials(update).password, res, caption, update);
 
             } catch (TelegramApiException e) {
                 sendMessage(update, "Input file is corrupt!");
@@ -55,8 +55,8 @@ public class post extends InstaX implements Master {
     }
 
     public void postNow(String username, String password, File res, String caption, Update update) {
-        username = credentials.username;
-        password = credentials.password;
+        username = new credentials(update).username;
+        password = new credentials(update).password;
         try {
             IGClient client = IGClient.builder().username(username).password(password).login();
 
@@ -64,6 +64,7 @@ public class post extends InstaX implements Master {
                     sendMessage(update, "Succesfully Uploaded Photo!");
                 }).join();
         } catch (IGLoginException e) {
+            sendMessage(update, "Incorrect Username/Password\nType /setcred to re-enter your credentials");
             e.printStackTrace();
         }
     }
