@@ -9,6 +9,8 @@ import com.hellionbots.Master;
 import com.hellionbots.Helpers.credHelper;
 import com.hellionbots.Helpers.credentials;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -17,55 +19,80 @@ public class post extends InstaX implements Master {
 
     @Override
     public void handleRequests(Update update, String cmd) {
-        if (cmd.equalsIgnoreCase(getHandler() + "post")) {
+        if (update.getMessage().getReplyToMessage().hasPhoto() && cmd.equalsIgnoreCase(getHandler() + "post")) {
             credHelper cred = new credHelper();
             if (cred.isUPresent(update) && cred.isPPresent(update)) {
-                sendMessage(update, "Send a Reply Image to Post to your Account");
-            }
-            else
-                sendMessage(update, "Please set your Username and Password in order to use the Bot.");
-        }
-        if(update.getMessage().hasPhoto() && update.getMessage().getReplyToMessage().getText().equals("Send a Reply Image to Post to your Account")){
-            List<PhotoSize> arr = update.getMessage().getPhoto();
-
-            PhotoSize biggSize = null;
-            for (int i = 0; i < arr.size(); i++) {
-                for (int j = 0; j < arr.size(); j++) {
-                    if (arr.get(i).getFileSize() > arr.get(j).getFileSize())
-                        biggSize = arr.get(i);
-                }
-            }
-            String caption = update.getChannelPost().getCaption();
-            PhotoSize photos = biggSize;
-            GetFile getFiled = new GetFile();
-            getFiled.setFileId(photos.getFileId());
-
-            org.telegram.telegrambots.meta.api.objects.File file;
-
-            try {
-                file = execute(getFiled);
-                File res = downloadFile(file);
-
-                postNow(new credentials(update).username, new credentials(update).password, res, caption, update);
-
-            } catch (TelegramApiException e) {
-                sendMessage(update, "Input file is corrupt!");
-            }
+                upload(update);
+            } else
+                sendMessage(update,
+                        "Please set your Username and Password in order to use the Bot.\nType /setcred to enter your credential's");
         }
     }
 
-    public void postNow(String username, String password, File res, String caption, Update update) {
+    public void upload(Update update) {
+        Message m = sendMessage(update, "Uploading...");
+        long startTime = System.nanoTime();
+        List<PhotoSize> arr = update.getMessage().getReplyToMessage().getPhoto();
+
+        PhotoSize biggSize = null;
+        for (int i = 0; i < arr.size(); i++) {
+            for (int j = 0; j < arr.size(); j++) {
+                if (arr.get(i).getFileSize() > arr.get(j).getFileSize())
+                    biggSize = arr.get(i);
+            }
+        }
+        String caption = update.getMessage().getReplyToMessage().getText();
+        PhotoSize photos = biggSize;
+        GetFile getFiled = new GetFile();
+        getFiled.setFileId(photos.getFileId());
+
+        org.telegram.telegrambots.meta.api.objects.File file;
+
+        try {
+            file = execute(getFiled);
+            File res = downloadFile(file);
+
+            if (postNow(new credentials(update).username, new credentials(update).password, res, caption, update, m) != false)
+            {
+                long endTime = System.nanoTime();
+
+                EditMessageText editMessageText = new EditMessageText();
+                editMessageText.setChatId(chatId(update));
+                editMessageText.setMessageId(m.getMessageId());
+                editMessageText.setText(
+                        "Uploaded Succesfullly in " + (((endTime - startTime) * Math.pow(10, -9)) + "").substring(0, 3)
+                                + "s\n" + "File Size : " + (file.getFileSize() / 0.001 + "").substring(0, 3) + " mb\n"
+                                + "File Dimension : " + photos.getWidth() + "x" + photos.getHeight());
+
+                execute(editMessageText);
+            }
+        } catch (TelegramApiException e) {
+            sendMessage(update, "Input file is corrupt!");
+        }
+    }
+
+    public boolean postNow(String username, String password, File res, String caption, Update update, Message m) {
         username = new credentials(update).username;
         password = new credentials(update).password;
         try {
             IGClient client = IGClient.builder().username(username).password(password).login();
 
             client.actions().timeline().uploadPhoto(res, caption).thenAccept(response -> {
-                    sendMessage(update, "Succesfully Uploaded Photo!");
-                }).join();
+            }).join();
+            return true;
         } catch (IGLoginException e) {
-            sendMessage(update, "Incorrect Username/Password\nType /setcred to re-enter your credentials");
+            EditMessageText editMessageText = new EditMessageText();
+            editMessageText.setChatId(chatId(update));
+            editMessageText.setMessageId(m.getMessageId());
+            editMessageText.setText("Incorrect Username/Password\nType /setcred to re-enter your credentials");
+
+            try {
+                execute(editMessageText);
+            } catch (TelegramApiException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
+            return false;
         }
     }
 
