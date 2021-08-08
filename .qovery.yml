@@ -1,0 +1,15 @@
+---
+application:
+  name: "InstaXBot"
+  project: "bot"
+  organization: "Hellion Bots"
+databases:
+- type: "Mongo"
+  name: "InstaX"
+  version: "1"
+routers:
+- name: "main-tests"
+  routes:
+  - application_name: "tests"
+    paths:
+    - "/*"
