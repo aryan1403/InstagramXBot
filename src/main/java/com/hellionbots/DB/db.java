@@ -13,7 +13,7 @@ import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 public class db {
-    private final String connection = configuration.conn;
+    private final String connection = "mongodb+srv://admin:12345@cluster0.ni15a.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
     private final String dbName = "test";
     private final String collName = "testing";
     
