@@ -16,11 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class post extends InstaX implements Master {
-
-    public post(Update update) {
-        super(update);
-    }
-
     credHelper c = new credHelper();
 
     @Override
