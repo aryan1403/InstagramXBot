@@ -15,14 +15,14 @@ import com.hellionbots.Plugins.post;
 import com.hellionbots.Plugins.setCredentials;
 import com.hellionbots.Plugins.Greets.start;
 
-public class InstaX extends TelegramLongPollingBot {
-
-    ExecutorService executorService = Executors.newFixedThreadPool(10);  
+public class InstaX extends TelegramLongPollingBot { 
     
     @Override
     public void onUpdateReceived(Update update) {
         String cmd = update.getMessage().getText();
 
+        
+        ExecutorService executorService = Executors.newFixedThreadPool(10); 
         executorService.execute(new Runnable() {  
             @Override  
             public void run() {  
@@ -30,11 +30,6 @@ public class InstaX extends TelegramLongPollingBot {
             }  
         }); 
         executorService.shutdown();
-        try {
-            executorService.awaitTermination(1, TimeUnit.MINUTES);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void sendRequest(Update update, String cmd) {
