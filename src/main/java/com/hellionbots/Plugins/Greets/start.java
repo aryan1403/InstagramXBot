@@ -14,7 +14,7 @@ public class start extends InstaX implements Master {
             String s = "Hello " + update.getMessage().getFrom().getFirstName()
                     + "\nI can Help you Managing your Instagram Account."
                     + "\nType /help to see all the available Commands."
-                    + "\nType /setcred to enter your credential's\nFormat : <Username> <Password>\nExample : /setcred abcdefgh@gmail.com 12345";
+                    + "\nType /setcred to enter your credential's\nFormat : <Username> <Password>\nExample : /setcred abcdefgh 12345";
             sendMessage(update, s);
         }
 
