@@ -6,7 +6,6 @@ import com.github.instagram4j.instagram4j.IGClient;
 import com.github.instagram4j.instagram4j.exceptions.IGLoginException;
 import com.hellionbots.InstaX;
 import com.hellionbots.Master;
-import com.hellionbots.Helpers.credHelper;
 import com.hellionbots.Helpers.credentials;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -16,8 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class post extends InstaX implements Master {
-    credHelper c = new credHelper();
-
     @Override
     public void handleRequests(Update update, String cmd) {
         if (update.getMessage().getReplyToMessage().hasPhoto() && cmd.equalsIgnoreCase(getHandler() + "post")) {
