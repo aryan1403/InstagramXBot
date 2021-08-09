@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class start extends InstaX implements Master {
+    credentials c = new credentials();
     @Override
     public void handleRequests(Update update, String cmd) {
         if (cmd.equalsIgnoreCase(getHandler() + "start")) {
@@ -16,7 +17,6 @@ public class start extends InstaX implements Master {
                     + "\nI can Help you Managing your Instagram Account."
                     + "\nType /help to see all the available Commands.";
             Message m = sendMessage(update, s);
-            credentials c = new credentials();
             if (c.getUsername(update) == null && c.getPass(update) == null) {
                 EditMessageText editMessageText = new EditMessageText();
                 editMessageText.setChatId(chatId(update));

@@ -6,7 +6,7 @@ import com.github.instagram4j.instagram4j.models.user.User.ProfilePic;
 import com.hellionbots.InstaX;
 import com.hellionbots.Master;
 import com.hellionbots.Helpers.credentials;
-import java.io.IOException;
+import com.hellionbots.Helpers.preLogin;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -17,6 +17,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class info extends InstaX implements Master {
     Message m;
+
+    preLogin preLogin = new preLogin();
+    IGClient client = preLogin.Login();
 
     @Override
     public void handleRequests(Update update, String cmd) {
@@ -39,11 +42,9 @@ public class info extends InstaX implements Master {
 
     public void getInfo(Update update, String t, String username, String password) {
         String info = "";
-        IGClient client;
         try {
             long start = System.nanoTime();
-            client = IGClient.builder().username(username).password(password).simulatedLogin();
-
+            
             ProfilePic pic = client.actions().users().findByUsername(t).get().getUser().getHd_profile_pic_url_info();
             /*
             URL url = new URL(pic.url);
@@ -79,8 +80,18 @@ public class info extends InstaX implements Master {
             execute(deleteMessage);
             execute(photo);
             
-        } catch (InterruptedException | ExecutionException | TelegramApiException | IOException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException | TelegramApiException e) {
+            EditMessageText editMessageText = new EditMessageText();
+                editMessageText.setChatId(chatId(update));
+                editMessageText.setMessageId(m.getMessageId());
+                editMessageText.setText(
+                        "Error Occured Fetching Details\nUser doesn't exist's");
+
+            try {
+                execute(editMessageText);
+            } catch (TelegramApiException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 

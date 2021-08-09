@@ -7,6 +7,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import com.hellionbots.Helpers.configuration;
 import com.hellionbots.Plugins.help;
 import com.hellionbots.Plugins.info;
@@ -19,14 +21,20 @@ public class InstaX extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         String cmd = update.getMessage().getText();
 
-        ExecutorService executorService = Executors.newFixedThreadPool(15);  
+        ExecutorService executorService = Executors.newFixedThreadPool(10);  
         executorService.execute(new Runnable() {  
             @Override  
             public void run() {  
                 sendRequest(update, cmd);
             }  
         });  
-        executorService.shutdown();  
+        executorService.shutdown(); 
+        try {
+            executorService.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+
+            e.printStackTrace();
+        }
         //new Thread(() -> sendRequest(update, cmd));
         //sendRequest(update, cmd);
     }
