@@ -14,20 +14,18 @@ public class db {
     private final String connection = "mongodb+srv://admin:12345@cluster0.ni15a.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
     private final String dbName = "test";
     private final String collName = "testing";
+
+    ConnectionString connectionString = new ConnectionString(connection);
+    MongoClientSettings settings = MongoClientSettings.builder()
+        .applyConnectionString(connectionString)
+        .build();
+    MongoClient client = MongoClients.create(settings);
+    
+    MongoDatabase database = client.getDatabase(dbName);
+    MongoCollection<Document> doc = database.getCollection(collName);
     
     public boolean add(Document document){
         try {
-            ConnectionString connectionString = new ConnectionString(connection);
-            MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString)
-                .build();
-            //MongoCredential credential = MongoCredential.createCredential(configuration.username, "database", configuration.password.toCharArray());
-            //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
-            MongoClient client = MongoClients.create(settings);
-            
-            MongoDatabase database = client.getDatabase(dbName);
-            MongoCollection<Document> doc = database.getCollection(collName);
-
             doc.insertOne(document);
             return true;
         } catch (Exception e) {
@@ -37,17 +35,6 @@ public class db {
 
     public void alreadyPresent(String id){
         try {
-            ConnectionString connectionString = new ConnectionString(connection);
-            MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString)
-                .build();
-
-            MongoClient client = MongoClients.create(settings);
-            //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
-            //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
-            MongoDatabase database = client.getDatabase(dbName);
-            MongoCollection<Document> doc = database.getCollection(collName);
-
             Document d = doc.find(Filters.eq("key", id)).first();
         
             if(d.isEmpty() != true){
@@ -59,17 +46,6 @@ public class db {
 
     public String findUsername(String id){
         try {
-            ConnectionString connectionString = new ConnectionString(connection);
-            MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString)
-                .build();
-
-            MongoClient client = MongoClients.create(settings);
-            //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
-            //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
-            MongoDatabase database = client.getDatabase(dbName);
-            MongoCollection<Document> doc = database.getCollection(collName);
-
             Document d = doc.find(Filters.eq("key", id)).first();
 
             if(d == null) return null;
@@ -83,17 +59,6 @@ public class db {
 
     public String findPassword(String id){
         try {
-            ConnectionString connectionString = new ConnectionString(connection);
-            MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString)
-                .build();
-
-            MongoClient client = MongoClients.create(settings);
-            //MongoCredential credential = MongoCredential.createCredential("user", "database", "passwd".toCharArray());
-            //MongoClient client = new MongoClient(new ServerAddress("localhost", 27017), Arrays.asList(credential));
-            MongoDatabase database = client.getDatabase(dbName);
-            MongoCollection<Document> doc = database.getCollection(collName);
-
             Document d = doc.find(Filters.eq("key", id)).first();
 
             if(d == null) return null;

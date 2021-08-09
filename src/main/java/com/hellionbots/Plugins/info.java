@@ -42,7 +42,7 @@ public class info extends InstaX implements Master {
         IGClient client;
         try {
             long start = System.nanoTime();
-            client = IGClient.builder().username(username).password(password).login();
+            client = IGClient.builder().username(username).password(password).simulatedLogin();
 
             ProfilePic pic = client.actions().users().findByUsername(t).get().getUser().getHd_profile_pic_url_info();
             /*

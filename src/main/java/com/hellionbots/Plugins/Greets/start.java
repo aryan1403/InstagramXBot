@@ -16,7 +16,8 @@ public class start extends InstaX implements Master {
                     + "\nI can Help you Managing your Instagram Account."
                     + "\nType /help to see all the available Commands.";
             Message m = sendMessage(update, s);
-            if (new credentials().getUsername(update) == null && new credentials().getPass(update) == null) {
+            credentials c = new credentials();
+            if (c.getUsername(update) == null && c.getPass(update) == null) {
                 EditMessageText editMessageText = new EditMessageText();
                 editMessageText.setChatId(chatId(update));
                 editMessageText.setMessageId(m.getMessageId());

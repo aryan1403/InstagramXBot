@@ -76,7 +76,7 @@ public class post extends InstaX implements Master {
 
     public boolean postNow(String username, String password, File res, String caption, Update update, Message m) {
         try {
-            IGClient client = IGClient.builder().username(username).password(password).login();
+            IGClient client = IGClient.builder().username(username).password(password).simulatedLogin();
 
             client.actions().timeline().uploadPhoto(res, caption).thenAccept(response -> {
             }).join();
