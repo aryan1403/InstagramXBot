@@ -65,7 +65,7 @@ public class info extends InstaX implements Master {
                 editMessageText.setChatId(chatId(update));
                 editMessageText.setMessageId(m.getMessageId());
                 editMessageText.setText(
-                        "Error Occured Fetching Details\nTry checking your Login Credential's or the User doesn't exist's");
+                        "Error Occured Fetching Details\nUser doesn't exist's");
             try {
                 execute(editMessageText);
             } catch (TelegramApiException e1) {
