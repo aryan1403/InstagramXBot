@@ -96,5 +96,4 @@ public class post extends InstaX implements Master {
             return false;
         }
     }
-
 }
