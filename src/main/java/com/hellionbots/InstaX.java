@@ -5,6 +5,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import com.hellionbots.Helpers.configuration;
 import com.hellionbots.Plugins.help;
 import com.hellionbots.Plugins.info;
@@ -17,8 +21,15 @@ public class InstaX extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         String cmd = update.getMessage().getText();
 
-
-        sendRequest(update, cmd);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);  
+        executorService.execute(new Runnable() {  
+            @Override  
+            public void run() {  
+                sendRequest(update, cmd);
+            }  
+        });  
+        executorService.shutdown();  
+        //sendRequest(update, cmd);
     }
 
     public void sendRequest(Update update, String cmd) {
