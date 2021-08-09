@@ -2,11 +2,11 @@ package com.hellionbots.Plugins;
 
 import java.util.concurrent.ExecutionException;
 import com.github.instagram4j.instagram4j.IGClient;
+import com.github.instagram4j.instagram4j.exceptions.IGLoginException;
 import com.github.instagram4j.instagram4j.models.user.User.ProfilePic;
 import com.hellionbots.InstaX;
 import com.hellionbots.Master;
 import com.hellionbots.Helpers.credentials;
-import com.hellionbots.Helpers.preLogin;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -17,8 +17,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class info extends InstaX implements Master {
     Message m;
-
-    IGClient client = new preLogin().Login();
 
     @Override
     public void handleRequests(Update update, String cmd) {
@@ -43,7 +41,7 @@ public class info extends InstaX implements Master {
         String info = "";
         try {
             long start = System.nanoTime();
-            
+            IGClient client = IGClient.builder().username(username).password(password).login();
             ProfilePic pic = client.actions().users().findByUsername(t).get().getUser().getHd_profile_pic_url_info();
 
             SendPhoto photo = new SendPhoto(chatId(update), new InputFile(pic.url));
@@ -62,7 +60,7 @@ public class info extends InstaX implements Master {
             
             execute(deleteMessage);
             execute(photo);
-        } catch (InterruptedException | ExecutionException | TelegramApiException e) {
+        } catch (InterruptedException | ExecutionException | TelegramApiException | IGLoginException e) {
             EditMessageText editMessageText = new EditMessageText();
                 editMessageText.setChatId(chatId(update));
                 editMessageText.setMessageId(m.getMessageId());
