@@ -16,7 +16,7 @@ public class help extends InstaX implements Master{
             sendPhoto.setCaption("Welcome to the Help Section of InstaX\n"
                 + "Available Commands :-\n"
                 + "1. /setcred - Enter your Credential's for Login\n"
-                + "2. /post - Reply to a photo/Video to Post it.\n"
+                + "2. / post - Reply to a photo/Video to Post it.\n"
                 + "3. /info - To get information about an account\nFormat : /info <Username>\n"
                 + "4. /setbio - To set a Bio\n"
                 + "5. /setname - To set a Name\n"
