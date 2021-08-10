@@ -8,7 +8,6 @@ import com.hellionbots.InstaX;
 import com.hellionbots.Master;
 import com.hellionbots.Helpers.credentials;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -17,7 +16,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class post extends InstaX implements Master {
     @Override
     public void handleRequests(Update update, String cmd) {
-        if (update.getMessage().getReplyToMessage().hasPhoto() && cmd.equalsIgnoreCase(getHandler() + "post")) {
+        if (update.getMessage().getFrom().getIsBot() != true && update.getMessage().getReplyToMessage().hasPhoto() && cmd.equalsIgnoreCase(getHandler() + "post")) {
             String username = new credentials().getUsername(update);
             String password = new credentials().getPass(update);
 
@@ -30,8 +29,7 @@ public class post extends InstaX implements Master {
     }
 
     public void upload(Update update, String username, String password) {
-        Message m = sendMessage(update, "Uploading...");
-        long startTime = System.nanoTime();
+        Message m = sendMessage(update, "Downloading...");
         List<PhotoSize> arr = update.getMessage().getReplyToMessage().getPhoto();
 
         PhotoSize biggSize = null;
@@ -51,20 +49,17 @@ public class post extends InstaX implements Master {
         try {
             file = execute(getFiled);
             File res = downloadFile(file);
+            long startTime = System.nanoTime();
+
+            editMessage(update, m.getMessageId(), "Uploading...");
 
             if (postNow(username, password, res, caption, update, m) != false)
             {
                 long endTime = System.nanoTime();
 
-                EditMessageText editMessageText = new EditMessageText();
-                editMessageText.setChatId(chatId(update));
-                editMessageText.setMessageId(m.getMessageId());
-                editMessageText.setText(
-                        "Uploaded Succesfullly in " + (((endTime - startTime) * Math.pow(10, -9)) + "").substring(0, 3)
-                                + "s\n" + "File Size : " + (file.getFileSize() / 0.001 + "").substring(0, 3) + " mb\n"
-                                + "File Dimension : " + photos.getWidth() + "x" + photos.getHeight());
-
-                execute(editMessageText);
+                editMessage(update, m.getMessageId(), "Uploaded Succesfullly in " + (((endTime - startTime) * Math.pow(10, -9)) + "").substring(0, 3)
+                    + "s\n" + "File Size : " + (file.getFileSize() / 0.001 + "").substring(0, 3) + " mb\n"
+                    + "File Dimension : " + photos.getWidth() + "x" + photos.getHeight());
             }
         } catch (TelegramApiException e) {
             sendMessage(update, "Input file is corrupt!");
@@ -79,17 +74,7 @@ public class post extends InstaX implements Master {
             }).join();
             return true;
         } catch (IGLoginException e) {
-            EditMessageText editMessageText = new EditMessageText();
-            editMessageText.setChatId(chatId(update));
-            editMessageText.setMessageId(m.getMessageId());
-            editMessageText.setText("Incorrect Username/Password\nType /setcred to re-enter your credentials");
-
-            try {
-                execute(editMessageText);
-            } catch (TelegramApiException e1) {
-                e1.printStackTrace();
-            }
-            e.printStackTrace();
+            editMessage(update, m.getMessageId(),"Incorrect Username/Password\nType /setcred to re-enter your credentials");
             return false;
         }
     }
