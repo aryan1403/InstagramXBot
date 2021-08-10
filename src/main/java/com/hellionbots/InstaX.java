@@ -2,6 +2,7 @@ package com.hellionbots;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -11,7 +12,12 @@ import com.hellionbots.Helpers.configuration;
 import com.hellionbots.Plugins.help;
 import com.hellionbots.Plugins.info;
 import com.hellionbots.Plugins.post;
+import com.hellionbots.Plugins.setBio;
 import com.hellionbots.Plugins.setCredentials;
+import com.hellionbots.Plugins.setpfp;
+import com.hellionbots.Plugins.story;
+import com.hellionbots.Plugins.test;
+import com.hellionbots.Plugins.uploadVideo;
 import com.hellionbots.Plugins.Greets.start;
 
 public class InstaX extends TelegramLongPollingBot { 
@@ -28,15 +34,21 @@ public class InstaX extends TelegramLongPollingBot {
             }  
         }); 
         executorService.shutdown();
+        sendRequest(update, cmd);
     }
 
     public void sendRequest(Update update, String cmd) {
         new start().handleRequests(update, cmd);
         new help().handleRequests(update, cmd);
+        new setpfp().handleRequests(update, cmd);
+        //new setName().handleRequests(update, cmd);
         new info().handleRequests(update, cmd);
         new setCredentials().handleRequests(update, cmd);
-        if(cmd.equalsIgnoreCase(getHandler()+"post")) 
-            new post().handleRequests(update, cmd);
+        new setBio().handleRequests(update, cmd);
+        new test().handleRequests(update, cmd);
+        new post().handleRequests(update, cmd);
+        new uploadVideo().handleRequests(update, cmd);
+        new story().handleRequests(update, cmd);
     }
 
     public String getHandler() {
@@ -45,6 +57,19 @@ public class InstaX extends TelegramLongPollingBot {
 
     public String chatId(Update update) {
         return update.getMessage().getChatId().toString();
+    }
+
+    public void editMessage(Update update, int mid, String text){
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setChatId(chatId(update));
+        editMessageText.setMessageId(mid);
+        editMessageText.setText(text);
+
+        try {
+            execute(editMessageText);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 
     public Message sendMessage(Update update, String text) {
