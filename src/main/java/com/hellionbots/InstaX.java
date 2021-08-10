@@ -34,7 +34,6 @@ public class InstaX extends TelegramLongPollingBot {
             }  
         }); 
         executorService.shutdown();
-        //sendRequest(update, cmd);
     }
 
     public void sendRequest(Update update, String cmd) {
