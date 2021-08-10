@@ -30,7 +30,8 @@ public class InstaX extends TelegramLongPollingBot {
         executorService.execute(new Runnable() {  
             @Override  
             public void run() {  
-                sendRequest(update, cmd);
+                if(cmd.startsWith(getHandler()))
+                    sendRequest(update, cmd);
             }  
         }); 
         executorService.shutdown();
