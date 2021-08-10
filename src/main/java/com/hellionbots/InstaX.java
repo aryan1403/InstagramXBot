@@ -2,47 +2,53 @@ package com.hellionbots;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import com.hellionbots.Helpers.configuration;
 import com.hellionbots.Plugins.help;
 import com.hellionbots.Plugins.info;
 import com.hellionbots.Plugins.post;
+import com.hellionbots.Plugins.setBio;
 import com.hellionbots.Plugins.setCredentials;
+import com.hellionbots.Plugins.setpfp;
+import com.hellionbots.Plugins.story;
+import com.hellionbots.Plugins.test;
+import com.hellionbots.Plugins.uploadVideo;
 import com.hellionbots.Plugins.Greets.start;
 
-public class InstaX extends TelegramLongPollingBot implements Runnable{
-
-    Update update;
-    String cmd;
-
-    public InstaX(Update update){
-        this.update = update;
-    }
-
-    //public InstaX(){}
-
+public class InstaX extends TelegramLongPollingBot { 
+    
     @Override
     public void onUpdateReceived(Update update) {
-        //String cmd = update.getMessage().getText();
-
-        Thread t = new Thread();
-        t.start();
-        //sendRequest(update, cmd);
+        String cmd = update.getMessage().getText();
+        
+        ExecutorService executorService = Executors.newFixedThreadPool(10); 
+        executorService.execute(new Runnable() {  
+            @Override  
+            public void run() {  
+                if(cmd.startsWith(getHandler()))
+                    sendRequest(update, cmd);
+            }  
+        }); 
+        executorService.shutdown();
     }
 
     public void sendRequest(Update update, String cmd) {
-        new start(update).handleRequests(update, cmd);
-        new help(update).handleRequests(update, cmd);
-        new info(update).handleRequests(update, cmd);
-        new setCredentials(update).handleRequests(update, cmd);
-        new post(update).handleRequests(update, cmd);
-    }
-
-    @Override
-    public void run() {
-        sendRequest(update, update.getMessage().getText().toString());
+        new start().handleRequests(update, cmd);
+        new help().handleRequests(update, cmd);
+        new setpfp().handleRequests(update, cmd);
+        //new setName().handleRequests(update, cmd);
+        new info().handleRequests(update, cmd);
+        new setCredentials().handleRequests(update, cmd);
+        new setBio().handleRequests(update, cmd);
+        new test().handleRequests(update, cmd);
+        new uploadVideo().handleRequests(update, cmd);
+        new story().handleRequests(update, cmd);
+        new post().handleRequests(update, cmd);
     }
 
     public String getHandler() {
@@ -51,6 +57,19 @@ public class InstaX extends TelegramLongPollingBot implements Runnable{
 
     public String chatId(Update update) {
         return update.getMessage().getChatId().toString();
+    }
+
+    public void editMessage(Update update, int mid, String text){
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setChatId(chatId(update));
+        editMessageText.setMessageId(mid);
+        editMessageText.setText(text);
+
+        try {
+            execute(editMessageText);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 
     public Message sendMessage(Update update, String text) {

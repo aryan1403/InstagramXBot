@@ -7,11 +7,6 @@ import com.hellionbots.DB.db;
 import org.bson.Document;
 
 public class setCredentials extends InstaX implements Master {
-
-    public setCredentials(Update update) {
-        super(update);
-    }
-
     @Override
     public void handleRequests(Update update, String cmd) {
         //String helpMsg = "Enter your Instagram Credentials\nFormat :\n<Username> <Password>\nExample : abcdefg@gmail.com 12345";
