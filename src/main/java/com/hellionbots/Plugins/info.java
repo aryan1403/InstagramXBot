@@ -32,7 +32,7 @@ public class info extends InstaX implements Master {
                 editMessageText.setChatId(chatId(update));
                 editMessageText.setMessageId(m.getMessageId());
                 editMessageText.setText(
-                        "Please set your Username and Password in order to use the Bot.\nType /setcred to enter your credential's");
+                    "Please set your Username and Password in order to use the Bot.\nType /setcred to enter your credential's");
             }
         }
     }
