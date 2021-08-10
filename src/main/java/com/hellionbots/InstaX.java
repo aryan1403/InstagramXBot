@@ -48,8 +48,7 @@ public class InstaX extends TelegramLongPollingBot {
         new test().handleRequests(update, cmd);
         new uploadVideo().handleRequests(update, cmd);
         new story().handleRequests(update, cmd);
-        if(cmd.equals(getHandler()+"post") && update.getMessage().getReplyToMessage().hasPhoto()) 
-            new post().handleRequests(update, cmd);
+        new post().handleRequests(update, cmd);
     }
 
     public String getHandler() {
