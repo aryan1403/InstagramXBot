@@ -17,6 +17,7 @@ public class test extends InstaX implements Master {
         if(cmd.equalsIgnoreCase(getHandler()+"unseen")){
             String username = new credentials().getUsername(update);
             String password = new credentials().getPass(update);
+            System.out.print(username+password);
             IGClient client;
             try {
                 client = IGClient.builder().username(username).password(password).login();
@@ -24,10 +25,9 @@ public class test extends InstaX implements Master {
                 //sendMessage(update, "Bio Set Successfully!");
                 DirectInboxResponse response = new DirectInboxRequest().execute(client).join();
                 Inbox inbox = response.getInbox();
+                sendMessage(update, response.getMessage());
 
                 sendMessage(update, "Unseen Messages : "+inbox.getUnseen_count());
-                
-            
 
             } catch (IOException e) {
                 sendMessage(update, "Incorrect Username/Password\nType /setcred to set your Username, Password");

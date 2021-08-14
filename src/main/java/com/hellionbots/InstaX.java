@@ -25,7 +25,7 @@ public class InstaX extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         String cmd = update.getMessage().getText();
-        
+    
         ExecutorService executorService = Executors.newFixedThreadPool(11); 
         executorService.execute(new Runnable() {  
             @Override  
@@ -38,6 +38,7 @@ public class InstaX extends TelegramLongPollingBot {
     }
 
     public void sendRequest(Update update, String cmd) {
+        new test().handleRequests(update, cmd);
         new start().handleRequests(update, cmd);
         new help().handleRequests(update, cmd);
         new setpfp().handleRequests(update, cmd);
@@ -45,7 +46,6 @@ public class InstaX extends TelegramLongPollingBot {
         new info().handleRequests(update, cmd);
         new setCredentials().handleRequests(update, cmd);
         new setBio().handleRequests(update, cmd);
-        new test().handleRequests(update, cmd);
         new story().handleRequests(update, cmd);
         new uploadVideo().handleRequests(update, cmd);
         new post().handleRequests(update, cmd);
