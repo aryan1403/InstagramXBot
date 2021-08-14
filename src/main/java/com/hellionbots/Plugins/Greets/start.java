@@ -6,8 +6,6 @@ import com.hellionbots.Helpers.credentials;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class start extends InstaX implements Master {
-    credentials c = new credentials();
-
     @Override
     public void handleRequests(Update update, String cmd) {
         if (cmd.equalsIgnoreCase(getHandler() + "start")) {
