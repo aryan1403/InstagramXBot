@@ -1,10 +1,12 @@
 package com.hellionbots;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,8 +32,19 @@ public class InstaX extends TelegramLongPollingBot {
         executorService.execute(new Runnable() {  
             @Override  
             public void run() {  
-                if(cmd.startsWith(getHandler()))
-                    sendRequest(update, cmd);
+                GetChatMember getChatMember = new GetChatMember("@HellionBotSupport",
+                        update.getMessage().getFrom().getId());
+                try {
+                    ChatMember c = execute(getChatMember);
+                    if (!c.getStatus().equals("left")) {
+                        if(cmd.startsWith(getHandler()))
+                            sendRequest(update, cmd);
+                    } else {
+                        sendMessage(update, "Join @HellionBots\nJoin @HellionBotSupport\n\nIn order to use me :)");
+                    }
+                } catch (TelegramApiException e) {
+                    System.out.println(e.getMessage());
+                }
             }  
         }); 
         executorService.shutdown();
